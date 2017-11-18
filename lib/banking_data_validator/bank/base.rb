@@ -1,6 +1,9 @@
 module BankingDataValidator
   module Bank
     class Base
+      Error = Class.new(StandardError)
+      InvalidAccountDigit = Class.new(Error)
+
       def self.valid_account?(branch, account_number, account_digit)
         new(branch, account_number, account_digit).valid_account?
       end
@@ -9,6 +12,8 @@ module BankingDataValidator
         @branch         = padding_with_zeros(branch, 4)
         @account_number = padding_with_zeros(account_number)
         @account_digit  = padding_with_zeros(account_digit)
+
+        raise InvalidAccountDigit if not valid_account?
       end
 
       def valid_account?
